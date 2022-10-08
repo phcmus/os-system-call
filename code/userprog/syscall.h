@@ -37,17 +37,14 @@
 
 #define SC_Add 42
 
-#define SC_ReadString 43
-#define SC_PrintString 44
-#define SC_Help 45
-#define SC_Ascii 46
-#define SC_Sort 47
-
-#define SC_ReadNum  48
-#define SC_PrintNum  49
-#define SC_RandomNum 50
-#define SC_ReadChar 51
-#define SC_PrintChar 52
+/* Newly added syscall(s) */
+#define SC_ReadNum  43
+#define SC_PrintNum  44
+#define SC_RandomNum 45
+#define SC_ReadChar 46
+#define SC_PrintChar 47
+#define SC_ReadString 48
+#define SC_PrintString 49
 
 
 
@@ -110,24 +107,6 @@ void PrintNum(int num);
  * Randomly generate an INTEGER
  */
 int RandomNum();
-
-/*
- * Print the group information
- */
-
-void Help();
-
-/*
- * Print ASCII table
- */
-
-void Ascii();
-
-/*
- * Sort
- */
-
-void Sort();
 
 /* Address space control operations: Exit, Exec, Execv, and Join */
 

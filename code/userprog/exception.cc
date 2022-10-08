@@ -200,63 +200,42 @@ void ExceptionHandler(ExceptionType which) {
 
       break;
     }
+		    
     case SC_ReadChar: {
-      int maxBytes = 255;
-      char *buffer = new char[255];
-      int numBytes = kernel->synchConsoleIn->GetChar();
-
-      if (numBytes > 1) // Neu nhap nhieu hon 1 ky tu thi khong hop le
-      {
-        printf("Chi duoc nhap duy nhat 1 ky tu!");
-        DEBUG('a', "\nERROR: Chi duoc nhap duy nhat 1 ky tu!");
-        kernel->machine->WriteRegister(2, 0);
-      } else if (numBytes == 0) // Ky tu rong
-      {
-        printf("Ky tu rong!");
-        DEBUG('a', "\nERROR: Ky tu rong!");
-        kernel->machine->WriteRegister(2, 0);
-      } else {
-        // Chuoi vua lay co dung 1 ky tu, lay ky tu o index = 0, return vao
-        // thanh ghi R2
-        char c = buffer[0];
-        kernel->machine->WriteRegister(2, c);
-      }
-
-      delete buffer;
-      // IncreasePC(); // error system
-      // return;
+      char result = SysReadChar();
+      DEBUG(dbgSys, "ReadChar returning with " << result << "\n");
+      kernel->machine->WriteRegister(2, result);
       break;
+    }
+		    
     }
     case SC_PrintChar: {
       char result = (char)kernel->machine->ReadRegister(4);
       DEBUG(dbgSys, "PrintChar returning with " << result << "\n");
-      kernel->synchConsoleOut->PutChar(result);
+      SysPrintChar(result);
       kernel->machine->WriteRegister(2, result);
       break;
     }
               
-    case SC_ReadNum:
-		{
-		int result = SysReadNum();
-		DEBUG(dbgSys, "ReadNum returning with " << result << "\n");
-		kernel->machine->WriteRegister(2, result);
-		break;
-		}
-		
-		case SC_PrintNum:
-		{
-		int output = kernel->machine->ReadRegister(4);
-		SysPrintNum(output);
-		break;
-		}
-
-		case SC_RandomNum:
-		{
-		int result = SysRandomNum();
-		DEBUG(dbgSys, "RandomNum returning with " << result << "\n");
-		kernel->machine->WriteRegister(2, result);
-		break;
-		}
+    case SC_ReadNum: {
+      int result = SysReadNum();
+      DEBUG(dbgSys, "ReadNum returning with " << result << "\n");
+      kernel->machine->WriteRegister(2, result);
+      break;
+    }
+		  
+    case SC_PrintNum: {
+      int output = kernel->machine->ReadRegister(4);
+      SysPrintNum(output);
+      break;
+    }
+		  
+    case SC_RandomNum: {
+      int result = SysRandomNum();
+      DEBUG(dbgSys, "RandomNum returning with " << result << "\n");
+      kernel->machine->WriteRegister(2, result);
+      break;
+    }
         
     default:
       cerr << "Unexpected system call " << type << "\n";

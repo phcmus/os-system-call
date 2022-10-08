@@ -81,7 +81,6 @@ void SysPrintNum(int num)
   sprintf(numChar, "%d", num);
   for (unsigned int i = 0; i < strlen(numChar); i++)
     kernel->synchConsoleOut->PutChar(numChar[i]);
-  kernel->synchConsoleOut->PutChar('\n');
 }
 
 /**/

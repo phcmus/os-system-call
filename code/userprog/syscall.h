@@ -42,8 +42,14 @@
 #define SC_Help 45
 #define SC_Ascii 46
 #define SC_Sort 47
-#define SC_ReadChar 48
-#define SC_PrintChar 49
+
+#define SC_ReadNum  48
+#define SC_PrintNum  49
+#define SC_RandomNum 50
+#define SC_ReadChar 51
+#define SC_PrintChar 52
+
+
 
 #ifndef IN_ASM
 
@@ -79,16 +85,31 @@ void ReadString(char buffer[], int length);
 void PrintString(char buffer[]);
 
 /*
- * Read a char
+ * Read a CHAR
  */
 
-void ReadChar(char buffer);
+char ReadChar();
 
 /*
- * Print a char to console
+ * Print a CHAR
  */
 
-void PrintChar(char buffer);
+void PrintChar(char character);
+
+/*
+ * Read an INTEGER
+ */
+int ReadNum();
+
+/*
+ * Print an INTEGER
+ */
+void PrintNum(int num);
+
+/*
+ * Randomly generate an INTEGER
+ */
+int RandomNum();
 
 /*
  * Print the group information

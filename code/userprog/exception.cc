@@ -234,6 +234,30 @@ void ExceptionHandler(ExceptionType which) {
       kernel->machine->WriteRegister(2, result);
       break;
     }
+              
+    case SC_ReadNum:
+		{
+		int result = SysReadNum();
+		DEBUG(dbgSys, "ReadNum returning with " << result << "\n");
+		kernel->machine->WriteRegister(2, result);
+		break;
+		}
+		
+		case SC_PrintNum:
+		{
+		int output = kernel->machine->ReadRegister(4);
+		SysPrintNum(output);
+		break;
+		}
+
+		case SC_RandomNum:
+		{
+		int result = SysRandomNum();
+		DEBUG(dbgSys, "RandomNum returning with " << result << "\n");
+		kernel->machine->WriteRegister(2, result);
+		break;
+		}
+        
     default:
       cerr << "Unexpected system call " << type << "\n";
       break;

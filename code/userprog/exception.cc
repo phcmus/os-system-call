@@ -189,8 +189,8 @@ void ExceptionHandler(ExceptionType which) {
       int tmp = -1;
       do {
         buffer[++tmp] = kernel->synchConsoleIn->GetChar();
-        DEBUG(dbgSys, buffer[tmp]);
-      } while (buffer[tmp] != '\0' && buffer[tmp] != ' ');
+        DEBUG(dbgSys, (int)(buffer[tmp] - '\0'));
+      } while (buffer[tmp] != '\0' && buffer[tmp] != (char)10);
 
       System2User(virtAddr, length, buffer);
 
@@ -200,14 +200,12 @@ void ExceptionHandler(ExceptionType which) {
 
       break;
     }
-		    
+
     case SC_ReadChar: {
       char result = SysReadChar();
       DEBUG(dbgSys, "ReadChar returning with " << result << "\n");
       kernel->machine->WriteRegister(2, result);
       break;
-    }
-		    
     }
     case SC_PrintChar: {
       char result = (char)kernel->machine->ReadRegister(4);
@@ -216,27 +214,27 @@ void ExceptionHandler(ExceptionType which) {
       kernel->machine->WriteRegister(2, result);
       break;
     }
-              
+
     case SC_ReadNum: {
       int result = SysReadNum();
       DEBUG(dbgSys, "ReadNum returning with " << result << "\n");
       kernel->machine->WriteRegister(2, result);
       break;
     }
-		  
+
     case SC_PrintNum: {
       int output = kernel->machine->ReadRegister(4);
       SysPrintNum(output);
       break;
     }
-		  
+
     case SC_RandomNum: {
       int result = SysRandomNum();
       DEBUG(dbgSys, "RandomNum returning with " << result << "\n");
       kernel->machine->WriteRegister(2, result);
       break;
     }
-        
+
     default:
       cerr << "Unexpected system call " << type << "\n";
       break;

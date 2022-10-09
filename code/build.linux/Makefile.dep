@@ -3418,8 +3418,8 @@ exception.o: ../userprog/exception.cc /usr/include/stdc-predef.h \
  ../filesys/openfile.h ../threads/scheduler.h ../lib/list.h \
  ../lib/list.cc ../machine/interrupt.h ../machine/callback.h \
  ../machine/stats.h ../threads/alarm.h ../machine/timer.h \
- ../threads/main.h ../userprog/synchconsole.h ../machine/console.h \
- ../threads/synch.h ../userprog/syscall.h ../userprog/errno.h
+ ../userprog/synchconsole.h ../machine/console.h ../threads/synch.h \
+ ../threads/main.h ../userprog/syscall.h ../userprog/errno.h
 synchconsole.o: ../userprog/synchconsole.cc /usr/include/stdc-predef.h \
  ../userprog/synchconsole.h ../lib/copyright.h ../lib/utility.h \
  ../machine/callback.h ../machine/console.h ../threads/synch.h \

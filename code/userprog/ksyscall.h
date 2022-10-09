@@ -16,6 +16,7 @@
 #include <time.h>
 #include <stdlib.h>
 #include <stdint.h>
+#include <math.h>
 
 #define MAX_LENGTH_INT 11
 
@@ -43,7 +44,7 @@ int SysReadNum()
   if (isdigit(temp) || temp == '-') {}
   else
     {
-      DEBUG(dbgSys, "Weird..." << '\n');
+      DEBUG(dbgSys, "First character invalid" << '\n');
       DEBUG(dbgSys, "temp: " << (int) temp << '\n');
       return -1;
     }
@@ -65,22 +66,58 @@ int SysReadNum()
         return INT32_MAX;
       }
     }
+
+    if (isdigit(temp) || temp == '-') {}
+    else
+    {
+      DEBUG(dbgSys, "First character invalid" << '\n');
+      DEBUG(dbgSys, "temp: " << (int) temp << '\n');
+      return -1;
+    }
     temp = kernel->synchConsoleIn->GetChar();
   }
 
+  bool negative = (numChar[0] == '-' ? 1 : 0);
   int num = 0;
-  sscanf(numChar, "%d", &num);
+  for (int i = negative; i < index; i++)
+    num += (numChar[i] - 48) * pow(10, index - 1 - i);
+  if (negative)
+    return -num;
   return num;
 }
 
 /**/
 
+
 void SysPrintNum(int num)
 {
+  DEBUG(dbgSys, "INTEGER RECEIVED: " << num << '\n');
+  
   char numChar[MAX_LENGTH_INT + 1];
-  sprintf(numChar, "%d", num);
-  for (unsigned int i = 0; i < strlen(numChar); i++)
+  memset(numChar, 0, sizeof(numChar));
+  int temp = abs(num);
+  DEBUG(dbgSys, "TEMP: " << temp << '\n');
+  int index = 0;
+
+  while (temp > 0)
+  {
+    int calc = (temp % 10) + 48;
+    numChar[index++] = (char) calc;
+    temp /= 10;
+  }
+
+  DEBUG(dbgSys, "INDEX: " << index << '\n');
+
+  if (num < 0)
+  {
+    kernel->synchConsoleOut->PutChar('-');
+  }
+
+  for (int i = index - 1; i >= 0; i--)
+  {
     kernel->synchConsoleOut->PutChar(numChar[i]);
+  }
+  return;
 }
 
 /**/

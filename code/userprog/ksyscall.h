@@ -93,9 +93,14 @@ void SysPrintNum(int num)
 {
   DEBUG(dbgSys, "INTEGER RECEIVED: " << num << '\n');
   
-  char numChar[MAX_LENGTH_INT + 1];
+  char numChar[MAX_LENGTH_INT + 2];
   memset(numChar, 0, sizeof(numChar));
-  int temp = abs(num);
+
+  int temp = 0;
+  if (num == INT32_MIN)
+    temp = INT32_MAX;
+  else
+    temp = abs(num);
   DEBUG(dbgSys, "TEMP: " << temp << '\n');
   int index = 0;
 
@@ -111,6 +116,11 @@ void SysPrintNum(int num)
   if (num < 0)
   {
     kernel->synchConsoleOut->PutChar('-');
+  }
+
+  if (num == INT32_MIN)
+  {
+    numChar[0] += 1;
   }
 
   for (int i = index - 1; i >= 0; i--)

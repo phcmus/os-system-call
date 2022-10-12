@@ -27,6 +27,7 @@
 #include "main.h"
 #include "synchconsole.h"
 #include "syscall.h"
+#include <i>
 //----------------------------------------------------------------------
 // ExceptionHandler
 // 	Entry point into the Nachos kernel.  Called when a user program
@@ -70,8 +71,9 @@ char *User2System(int virtAddr, int limit) {
 }
 
 // Input: Khong gian vung nho User(int) - gioi han cua buffer(int) - bo nho dem
-// buffer(char*) Output: So byte da sao chep(int) Chuc nang: Sao chep vung nho
-// System sang vung nho User
+// buffer(char*)
+// Output: So byte da sao chep(int)
+// Chuc nang: Sao chep vung nho System sang vung nho User
 int System2User(int virtAddr, int len, char *buffer) {
   if (len < 0)
     return -1;
@@ -161,16 +163,19 @@ void ExceptionHandler(ExceptionType which) {
 
       int virtAddr;
       char *buffer;
+      // read buffer address from register 4
       virtAddr = kernel->machine->ReadRegister(4);
-      buffer = User2System(virtAddr, 255);
-      // Copy chuoi tu vung nho User Space sang
-      // System Space voi bo dem buffer dai 255 ki tu
+      // convert memory from user space to system
+      // space in order to system can read
       int length = 0;
+      buffer = User2System(virtAddr, 255);
       while (buffer[length] != 0)
+        // print current character to console
         kernel->synchConsoleOut->PutChar(buffer[length++]);
 
-      delete buffer;
+      delete buffer; // free memory, prevent memory leak
 
+      // return status code (0: success) to register 2
       kernel->machine->WriteRegister(2, 0);
 
       break;
@@ -181,21 +186,30 @@ void ExceptionHandler(ExceptionType which) {
 
       int virtAddr, length;
       char *buffer;
+      // read buffer address from register 4
       virtAddr = kernel->machine->ReadRegister(4);
+      // read max length value from register 5
       length = kernel->machine->ReadRegister(5);
+      // convert memory from user space to system
+      // space in order to system can read
       buffer = User2System(virtAddr, length);
 
       DEBUG(dbgSys, virtAddr);
       int tmp = -1;
       do {
         buffer[++tmp] = kernel->synchConsoleIn->GetChar();
+        // get character from buffer
+
         DEBUG(dbgSys, (int)(buffer[tmp] - '\0'));
       } while (buffer[tmp] != '\0' && buffer[tmp] != (char)10);
+      // read new character until
 
+      // convert memory back to user space to return string read
       System2User(virtAddr, length, buffer);
 
-      delete buffer;
+      delete buffer; // free memory, prevent memory leak
 
+      // return status code (0: success) to register 2
       kernel->machine->WriteRegister(2, 0);
 
       break;

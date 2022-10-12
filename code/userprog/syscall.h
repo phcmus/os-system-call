@@ -12,9 +12,9 @@
 
 #ifndef SYSCALLS_H
 #define SYSCALLS_H
-
 #include "copyright.h"
 #include "errno.h"
+#include <iostream>
 /* system call codes -- used by the stubs to tell the kernel which system call
  * is being asked for
  */
@@ -38,15 +38,13 @@
 #define SC_Add 42
 
 /* Newly added syscall(s) */
-#define SC_ReadNum  43
-#define SC_PrintNum  44
+#define SC_ReadNum 43
+#define SC_PrintNum 44
 #define SC_RandomNum 45
 #define SC_ReadChar 46
 #define SC_PrintChar 47
 #define SC_ReadString 48
 #define SC_PrintString 49
-
-
 
 #ifndef IN_ASM
 
